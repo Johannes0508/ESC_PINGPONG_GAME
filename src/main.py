@@ -1,7 +1,7 @@
 import pygame  # Importera pygame-biblioteket
 from pygame import Rect  # Importera Rect-klassen från pygame
 
-from entities import Entity
+from entities import Entity  # Importera Entity-klassen från entities-mappen
 
 pygame.init()  # Initialisera pygame-modulen
 
