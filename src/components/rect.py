@@ -1,3 +1,6 @@
+from pygame import Rect
+
+
 class RectComponent:
   """A class representing a rectangular component.
 

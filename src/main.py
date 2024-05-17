@@ -1,9 +1,15 @@
 import pygame  # Importera pygame-biblioteket
-from pygame import Rect  # Importera Rect-klassen från pygame
+from components import (
+  PositionComponent,
+  RadiusComponent,
+  RectComponent,
+  SpeedComponent,
+  WinnerComponent,
+)
 
+from systems import MotionSystem, RenderingSystem
 
 from entities import Entity
-from components import PositionComponent, SpeedComponent 
 
 pygame.init()  # Initialisera pygame-modulen
 
@@ -50,214 +56,86 @@ def draw_text(text, font, text_col, x, y):
       img, (x, y))  # Rita textbilden på skärmen vid specificerade koordinater
 
 
-# Klassdefinitioner för komponenter
-# class Entity:
-#   """A class representing an entity in the game.
+# class MotionSystem:
+#   """A class that handles the movement of players and the ball in a ping pong game.
+
+#   This class contains methods to move the player, move the AI, and move the ball.
+#   """
+
+#   def move_player(self, entity_player):
+#     rect = entity_player.get_component(RectComponent).rect
+#     speed = entity_player.get_component(SpeedComponent).speed
+#     key = pygame.key.get_pressed()
+
+#     if key[pygame.K_UP] and rect.top > margin:
+#       rect.y -= speed
+#     if key[pygame.K_DOWN] and rect.bottom < screen_height:
+#       rect.y += speed
+
+#   def move_ai(self, entity_ball, entity_ai):
+#     rect_ai = entity_ai.get_component(RectComponent).rect
+#     speed_ai = entity_ai.get_component(SpeedComponent).speed
+#     rect_ball = entity_ball.get_component(RectComponent).rect
+
+#     if rect_ai.centery < rect_ball.centery and rect_ai.bottom < screen_height:
+#       rect_ai.y += speed_ai
+#     if rect_ai.centery > rect_ball.centery and rect_ai.top > margin:
+#       rect_ai.y -= speed_ai
+
+#   def move_ball(self, entity_ball, entity_player, entity_ai):
+#     rect_ball = entity_ball.get_component(RectComponent).rect
+#     speed_ball = entity_ball.get_component(SpeedComponent)
+#     rect_player = entity_player.get_component(RectComponent).rect
+#     rect_ai = entity_ai.get_component(RectComponent).rect
+
+#     if rect_ball.top <= margin or rect_ball.bottom >= screen_height:
+#       speed_ball.y_speed *= -1
+#     if rect_ball.colliderect(rect_player) or rect_ball.colliderect(rect_ai):
+#       speed_ball.x_speed *= -1
+
+#     rect_ball.x += speed_ball.x_speed
+#     rect_ball.y += speed_ball.y_speed
+
+#     if rect_ball.right >= screen_width:
+#       entity_ball.get_component(WinnerComponent).winner = 1
+#     elif rect_ball.left <= 0:
+#       entity_ball.get_component(WinnerComponent).winner = -1
+
+
+# class RenderingSystem:
+#   """A class responsible for rendering game entities on the screen.
+
+#   This class provides methods to draw the player's paddle and the ball on the screen.
 
 #   Attributes:
-#       id (int): The unique ID of the entity.
-#       components (dict): A dictionary to store the components of the entity.
+#     None
 
 #   Methods:
-#       add_component(component): Adds a component to the entity.
-#       get_component(component_type): Retrieves a component from the entity.
-
+#     draw_paddle: Draws the player's paddle on the screen.
+#     draw_ball: Draws the ball on the screen.
 #   """
-#   id_counter = 0
-
-#   def __init__(self):
-#     self.id = Entity.id_counter
-#     Entity.id_counter += 1
-#     self.components = {}
-
-#   def add_component(self, component):
+#   def draw_paddle(self, entity):
 #     """
-#     Add a component to the game.
+#     Draw the paddle on the screen.
 
 #     Args:
-#       component (object): The component to be added.
+#       entity: The entity representing the paddle.
 
 #     Returns:
 #       None
 #     """
-#     self.components[type(component)] = component
+#     rect = entity.get_component(RectComponent).rect
+#     pygame.draw.rect(screen, white, rect)
 
-#   def get_component(self, component_type):
-#     """Get a component of the specified type.
+#   def draw_ball(self, entity):
+#     """Draws a ball on the screen.
 
 #     Args:
-#       component_type (type): The type of the component.
-
-#     Returns:
-#       object: The component of the specified type, or None if not found.
+#       entity (Entity): The entity representing the ball.
 #     """    
-#     return self.components.get(component_type, None)
-
-
-# Komponent för att hantera position
-# class PositionComponent:
-#   """A class representing the position of an object.
-
-#   Attributes:
-#     x (int): The x-coordinate of the position.
-#     y (int): The y-coordinate of the position.
-#   """
-
-#   def __init__(self, x, y):
-#     """
-#     Initialize a new PositionComponent instance.
-
-#     Args:
-#       x (int): The initial x-coordinate of the position.
-#       y (int): The initial y-coordinate of the position.
-#     """
-#     self.x = x
-#     self.y = y
-  
-
-# Komponent för att hantera hastighet
-# class SpeedComponent:
-#   """A class representing the speed component of an object.
-
-#   Attributes:
-#     speed (float): The overall speed of the object.
-#     x_speed (float): The speed of the object in the x-direction.
-#     y_speed (float): The speed of the object in the y-direction.
-#   """
-
-#   def __init__(self, speed):
-#     self.speed = speed  
-#     self.x_speed = self.speed  
-#     self.y_speed = -self.speed  
-
-
-# class RectComponent:
-#   """A class representing a rectangular component.
-
-#   Attributes:
-#     rect (Rect): A rectangle with specified dimensions.
-
-#   Args:
-#     x (int): The x-coordinate of the top-left corner of the rectangle.
-#     y (int): The y-coordinate of the top-left corner of the rectangle.
-#     width (int): The width of the rectangle.
-#     height (int): The height of the rectangle.
-#   """  
-
-#   def __init__(self, x, y, width, height):
-#     self.rect = Rect(x, y, width, height)
-
-# class RadiusComponent:
-#   """A class representing a component with a radius.
-
-#   This class stores the radius of a circular shape.
-
-#   Args:
-#       radius (float): The radius of the circular shape.
-
-#   Attributes:
-#       radius (float): The radius of the circular shape.
-
-#   """
-#   def __init__(self, radius):
-#     self.radius = radius
-
-# class WinnerComponent:
-#   """A class to represent the winner of a game.
-
-#   Attributes:
-#     winner (int): The flag to keep track of the winner.
-
-#   Methods:
-#     __init__(self, winner=0): Initializes a new instance of the WinnerComponent class.
-
-#   """
-
-#   def __init__(self, winner=0):
-#     self.winner = winner
-
-
-
-class MotionSystem:
-  """A class that handles the movement of players and the ball in a ping pong game.
-
-  This class contains methods to move the player, move the AI, and move the ball.
-  """
-
-  def move_player(self, entity_player):
-    rect = entity_player.get_component(RectComponent).rect
-    speed = entity_player.get_component(SpeedComponent).speed
-    key = pygame.key.get_pressed()
-
-    if key[pygame.K_UP] and rect.top > margin:
-      rect.y -= speed
-    if key[pygame.K_DOWN] and rect.bottom < screen_height:
-      rect.y += speed
-
-  def move_ai(self, entity_ball, entity_ai):
-    rect_ai = entity_ai.get_component(RectComponent).rect
-    speed_ai = entity_ai.get_component(SpeedComponent).speed
-    rect_ball = entity_ball.get_component(RectComponent).rect
-
-    if rect_ai.centery < rect_ball.centery and rect_ai.bottom < screen_height:
-      rect_ai.y += speed_ai
-    if rect_ai.centery > rect_ball.centery and rect_ai.top > margin:
-      rect_ai.y -= speed_ai
-
-  def move_ball(self, entity_ball, entity_player, entity_ai):
-    rect_ball = entity_ball.get_component(RectComponent).rect
-    speed_ball = entity_ball.get_component(SpeedComponent)
-    rect_player = entity_player.get_component(RectComponent).rect
-    rect_ai = entity_ai.get_component(RectComponent).rect
-
-    if rect_ball.top <= margin or rect_ball.bottom >= screen_height:
-      speed_ball.y_speed *= -1
-    if rect_ball.colliderect(rect_player) or rect_ball.colliderect(rect_ai):
-      speed_ball.x_speed *= -1
-
-    rect_ball.x += speed_ball.x_speed
-    rect_ball.y += speed_ball.y_speed
-
-    if rect_ball.right >= screen_width:
-      entity_ball.get_component(WinnerComponent).winner = 1
-    elif rect_ball.left <= 0:
-      entity_ball.get_component(WinnerComponent).winner = -1
-
-
-class RenderingSystem:
-  """A class responsible for rendering game entities on the screen.
-
-  This class provides methods to draw the player's paddle and the ball on the screen.
-
-  Attributes:
-    None
-
-  Methods:
-    draw_paddle: Draws the player's paddle on the screen.
-    draw_ball: Draws the ball on the screen.
-  """
-  def draw_paddle(self, entity):
-    """
-    Draw the paddle on the screen.
-
-    Args:
-      entity: The entity representing the paddle.
-
-    Returns:
-      None
-    """
-    rect = entity.get_component(RectComponent).rect
-    pygame.draw.rect(screen, white, rect)
-
-  def draw_ball(self, entity):
-    """Draws a ball on the screen.
-
-    Args:
-      entity (Entity): The entity representing the ball.
-    """    
-    ball_radius = entity.get_component(RadiusComponent).radius
-    rect = entity.get_component(RectComponent).rect
-    pygame.draw.circle(screen, white, rect.center, ball_radius)
+#     ball_radius = entity.get_component(RadiusComponent).radius
+#     rect = entity.get_component(RectComponent).rect
+#     pygame.draw.circle(screen, white, rect.center, ball_radius)
 
 
 entity_player = Entity()  
