@@ -2,6 +2,7 @@ import pygame  # Importera pygame-biblioteket
 from pygame import Rect  # Importera Rect-klassen från pygame
 
 from entities import Entity
+from components import PositionComponent, SpeedComponent 
 
 pygame.init()  # Initialisera pygame-modulen
 
@@ -93,86 +94,86 @@ def draw_text(text, font, text_col, x, y):
 
 
 # Komponent för att hantera position
-class PositionComponent:
-  """A class representing the position of an object.
+# class PositionComponent:
+#   """A class representing the position of an object.
 
-  Attributes:
-    x (int): The x-coordinate of the position.
-    y (int): The y-coordinate of the position.
-  """
+#   Attributes:
+#     x (int): The x-coordinate of the position.
+#     y (int): The y-coordinate of the position.
+#   """
 
-  def __init__(self, x, y):
-    """
-    Initialize a new PositionComponent instance.
+#   def __init__(self, x, y):
+#     """
+#     Initialize a new PositionComponent instance.
 
-    Args:
-      x (int): The initial x-coordinate of the position.
-      y (int): The initial y-coordinate of the position.
-    """
-    self.x = x
-    self.y = y
+#     Args:
+#       x (int): The initial x-coordinate of the position.
+#       y (int): The initial y-coordinate of the position.
+#     """
+#     self.x = x
+#     self.y = y
   
 
 # Komponent för att hantera hastighet
-class SpeedComponent:
-  """A class representing the speed component of an object.
+# class SpeedComponent:
+#   """A class representing the speed component of an object.
 
-  Attributes:
-    speed (float): The overall speed of the object.
-    x_speed (float): The speed of the object in the x-direction.
-    y_speed (float): The speed of the object in the y-direction.
-  """
+#   Attributes:
+#     speed (float): The overall speed of the object.
+#     x_speed (float): The speed of the object in the x-direction.
+#     y_speed (float): The speed of the object in the y-direction.
+#   """
 
-  def __init__(self, speed):
-    self.speed = speed  
-    self.x_speed = self.speed  
-    self.y_speed = -self.speed  
+#   def __init__(self, speed):
+#     self.speed = speed  
+#     self.x_speed = self.speed  
+#     self.y_speed = -self.speed  
 
 
-class RectComponent:
-  """A class representing a rectangular component.
+# class RectComponent:
+#   """A class representing a rectangular component.
 
-  Attributes:
-    rect (Rect): A rectangle with specified dimensions.
+#   Attributes:
+#     rect (Rect): A rectangle with specified dimensions.
 
-  Args:
-    x (int): The x-coordinate of the top-left corner of the rectangle.
-    y (int): The y-coordinate of the top-left corner of the rectangle.
-    width (int): The width of the rectangle.
-    height (int): The height of the rectangle.
-  """  
+#   Args:
+#     x (int): The x-coordinate of the top-left corner of the rectangle.
+#     y (int): The y-coordinate of the top-left corner of the rectangle.
+#     width (int): The width of the rectangle.
+#     height (int): The height of the rectangle.
+#   """  
 
-  def __init__(self, x, y, width, height):
-    self.rect = Rect(x, y, width, height)
+#   def __init__(self, x, y, width, height):
+#     self.rect = Rect(x, y, width, height)
 
-class RadiusComponent:
-  """A class representing a component with a radius.
+# class RadiusComponent:
+#   """A class representing a component with a radius.
 
-  This class stores the radius of a circular shape.
+#   This class stores the radius of a circular shape.
 
-  Args:
-      radius (float): The radius of the circular shape.
+#   Args:
+#       radius (float): The radius of the circular shape.
 
-  Attributes:
-      radius (float): The radius of the circular shape.
+#   Attributes:
+#       radius (float): The radius of the circular shape.
 
-  """
-  def __init__(self, radius):
-    self.radius = radius
+#   """
+#   def __init__(self, radius):
+#     self.radius = radius
 
-class WinnerComponent:
-  """A class to represent the winner of a game.
+# class WinnerComponent:
+#   """A class to represent the winner of a game.
 
-  Attributes:
-    winner (int): The flag to keep track of the winner.
+#   Attributes:
+#     winner (int): The flag to keep track of the winner.
 
-  Methods:
-    __init__(self, winner=0): Initializes a new instance of the WinnerComponent class.
+#   Methods:
+#     __init__(self, winner=0): Initializes a new instance of the WinnerComponent class.
 
-  """
+#   """
 
-  def __init__(self, winner=0):
-    self.winner = winner
+#   def __init__(self, winner=0):
+#     self.winner = winner
 
 
 
