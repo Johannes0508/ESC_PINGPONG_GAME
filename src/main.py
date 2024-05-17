@@ -1,6 +1,8 @@
 import pygame  # Importera pygame-biblioteket
 from pygame import Rect  # Importera Rect-klassen från pygame
 
+from entities import Entity
+
 pygame.init()  # Initialisera pygame-modulen
 
 screen_width = 600  # Bredden på spelbildskärmen
@@ -47,195 +49,259 @@ def draw_text(text, font, text_col, x, y):
 
 
 # Klassdefinitioner för komponenter
-class Entity:
-  id_counter = 0  # En räknare för att skapa unika ID:n för enheterna
+# class Entity:
+#   """A class representing an entity in the game.
 
-  def __init__(self):
-    self.id = Entity.id_counter  # Unikt ID för varje enhet
-    Entity.id_counter += 1  # Öka ID-räknaren för nästa enhet
-    self.components = {
-    }  # En dictionary för att hålla komponenterna hos enheten
+#   Attributes:
+#       id (int): The unique ID of the entity.
+#       components (dict): A dictionary to store the components of the entity.
 
-  # Metod för att lägga till en komponent till enheten
-  def add_component(self, component):
-    self.components[type(component)] = component
+#   Methods:
+#       add_component(component): Adds a component to the entity.
+#       get_component(component_type): Retrieves a component from the entity.
 
-  # Metod för att hämta en komponent från enheten
-  def get_component(self, component_type):
-    return self.components.get(component_type, None)
+#   """
+#   id_counter = 0
+
+#   def __init__(self):
+#     self.id = Entity.id_counter
+#     Entity.id_counter += 1
+#     self.components = {}
+
+#   def add_component(self, component):
+#     """
+#     Add a component to the game.
+
+#     Args:
+#       component (object): The component to be added.
+
+#     Returns:
+#       None
+#     """
+#     self.components[type(component)] = component
+
+#   def get_component(self, component_type):
+#     """Get a component of the specified type.
+
+#     Args:
+#       component_type (type): The type of the component.
+
+#     Returns:
+#       object: The component of the specified type, or None if not found.
+#     """    
+#     return self.components.get(component_type, None)
 
 
 # Komponent för att hantera position
 class PositionComponent:
+  """A class representing the position of an object.
+
+  Attributes:
+    x (int): The x-coordinate of the position.
+    y (int): The y-coordinate of the position.
+  """
 
   def __init__(self, x, y):
-    self.x = x  # X-koordinat för positionen
-    self.y = y  # Y-koordinat för positionen
+    """
+    Initialize a new PositionComponent instance.
 
+    Args:
+      x (int): The initial x-coordinate of the position.
+      y (int): The initial y-coordinate of the position.
+    """
+    self.x = x
+    self.y = y
+  
 
 # Komponent för att hantera hastighet
 class SpeedComponent:
+  """A class representing the speed component of an object.
+
+  Attributes:
+    speed (float): The overall speed of the object.
+    x_speed (float): The speed of the object in the x-direction.
+    y_speed (float): The speed of the object in the y-direction.
+  """
 
   def __init__(self, speed):
-    self.speed = speed  # Hastigheten
-    self.x_speed = self.speed  # Hastighet i x-riktning
-    self.y_speed = -self.speed  # Hastighet i y-riktning
+    self.speed = speed  
+    self.x_speed = self.speed  
+    self.y_speed = -self.speed  
 
 
-# Komponent för att hantera rektangulär form
-##
 class RectComponent:
+  """A class representing a rectangular component.
+
+  Attributes:
+    rect (Rect): A rectangle with specified dimensions.
+
+  Args:
+    x (int): The x-coordinate of the top-left corner of the rectangle.
+    y (int): The y-coordinate of the top-left corner of the rectangle.
+    width (int): The width of the rectangle.
+    height (int): The height of the rectangle.
+  """  
 
   def __init__(self, x, y, width, height):
-    self.rect = Rect(x, y, width,
-                     height)  # En rektangel med specificerade dimensioner
+    self.rect = Rect(x, y, width, height)
 
-
-# Komponent för att hantera cirkulär form
 class RadiusComponent:
+  """A class representing a component with a radius.
 
+  This class stores the radius of a circular shape.
+
+  Args:
+      radius (float): The radius of the circular shape.
+
+  Attributes:
+      radius (float): The radius of the circular shape.
+
+  """
   def __init__(self, radius):
-    self.radius = radius  # Radien för cirkulär form
+    self.radius = radius
 
-
-# Komponent för att hålla reda på vinnaren
 class WinnerComponent:
+  """A class to represent the winner of a game.
+
+  Attributes:
+    winner (int): The flag to keep track of the winner.
+
+  Methods:
+    __init__(self, winner=0): Initializes a new instance of the WinnerComponent class.
+
+  """
 
   def __init__(self, winner=0):
-    self.winner = winner  # Flagga för att hålla reda på vinnaren
+    self.winner = winner
 
 
-# System för rörelsehantering
+
 class MotionSystem:
-  # Metod för att hantera spelarens rörelse
+  """A class that handles the movement of players and the ball in a ping pong game.
+
+  This class contains methods to move the player, move the AI, and move the ball.
+  """
+
   def move_player(self, entity_player):
-    rect = entity_player.get_component(
-        RectComponent).rect  # Hämta rektangelkomponenten för spelaren
-    speed = entity_player.get_component(
-        SpeedComponent).speed  # Hämta hastighetskomponenten för spelaren
-    key = pygame.key.get_pressed(
-    )  # Hämta vilka tangentknappar som är nedtryckta
-    # Om pil upp-tangenten är nedtryckt och spelarens överkant är inom synfältet, flytta spelaren uppåt
+    rect = entity_player.get_component(RectComponent).rect
+    speed = entity_player.get_component(SpeedComponent).speed
+    key = pygame.key.get_pressed()
+
     if key[pygame.K_UP] and rect.top > margin:
       rect.y -= speed
-    # Om pil ner-tangenten är nedtryckt och spelarens nederkant är inom synfältet, flytta spelaren nedåt
     if key[pygame.K_DOWN] and rect.bottom < screen_height:
       rect.y += speed
 
-  # Metod för att hantera AI:ns rörelse
   def move_ai(self, entity_ball, entity_ai):
-    rect_ai = entity_ai.get_component(
-        RectComponent).rect  # Hämta rektangelkomponenten för AI:n
-    speed_ai = entity_ai.get_component(
-        SpeedComponent).speed  # Hämta hastighetskomponenten för AI:n
-    rect_ball = entity_ball.get_component(
-        RectComponent).rect  # Hämta rektangelkomponenten för bollen
-    # Om bollens centrum är över AI:ns centrum och AI:ns botten är inom synfältet, flytta AI:n nedåt
+    rect_ai = entity_ai.get_component(RectComponent).rect
+    speed_ai = entity_ai.get_component(SpeedComponent).speed
+    rect_ball = entity_ball.get_component(RectComponent).rect
+
     if rect_ai.centery < rect_ball.centery and rect_ai.bottom < screen_height:
       rect_ai.y += speed_ai
-    # Om bollens centrum är under AI:ns centrum och AI:ns topp är inom synfältet, flytta AI:n uppåt
     if rect_ai.centery > rect_ball.centery and rect_ai.top > margin:
       rect_ai.y -= speed_ai
 
-  # Metod för att hantera bollens rörelse
   def move_ball(self, entity_ball, entity_player, entity_ai):
-    rect_ball = entity_ball.get_component(
-        RectComponent).rect  # Hämta rektangelkomponenten för bollen
-    speed_ball = entity_ball.get_component(
-        SpeedComponent)  # Hämta hastighetskomponenten för bollen
-    rect_player = entity_player.get_component(
-        RectComponent).rect  # Hämta rektangelkomponenten för spelaren
-    rect_ai = entity_ai.get_component(
-        RectComponent).rect  # Hämta rektangelkomponenten för AI:n
+    rect_ball = entity_ball.get_component(RectComponent).rect
+    speed_ball = entity_ball.get_component(SpeedComponent)
+    rect_player = entity_player.get_component(RectComponent).rect
+    rect_ai = entity_ai.get_component(RectComponent).rect
 
-    # Logik för bollens rörelse
-    # Om bollens övre kant är över spelfältets överkant eller bollens nedre kant är under spelfältets nederkant, byt rörelseriktning i y-led
     if rect_ball.top <= margin or rect_ball.bottom >= screen_height:
       speed_ball.y_speed *= -1
-    # Om bollen kolliderar med spelaren eller AI:n, byt rörelseriktning i x-led
     if rect_ball.colliderect(rect_player) or rect_ball.colliderect(rect_ai):
       speed_ball.x_speed *= -1
-    # Uppdatera bollens position baserat på dess hastighet i x- och y-led
+
     rect_ball.x += speed_ball.x_speed
     rect_ball.y += speed_ball.y_speed
 
-    # Logik för poänguppdatering
-    # Om bollen når högerkanten av skärmen, öka motståndarens poäng
     if rect_ball.right >= screen_width:
       entity_ball.get_component(WinnerComponent).winner = 1
-    # Om bollen når vänsterkanten av skärmen, öka spelarens poäng
     elif rect_ball.left <= 0:
       entity_ball.get_component(WinnerComponent).winner = -1
 
 
-# System för rendering av spelobjekt
 class RenderingSystem:
-  # Metod för att rita ut spelarens paddel på skärmen
+  """A class responsible for rendering game entities on the screen.
+
+  This class provides methods to draw the player's paddle and the ball on the screen.
+
+  Attributes:
+    None
+
+  Methods:
+    draw_paddle: Draws the player's paddle on the screen.
+    draw_ball: Draws the ball on the screen.
+  """
   def draw_paddle(self, entity):
-    rect = entity.get_component(
-        RectComponent).rect  # Hämta rektangelkomponenten för enheten
-    # Rita en rektangel på skärmen med spelarens paddelposition och dimensioner
+    """
+    Draw the paddle on the screen.
+
+    Args:
+      entity: The entity representing the paddle.
+
+    Returns:
+      None
+    """
+    rect = entity.get_component(RectComponent).rect
     pygame.draw.rect(screen, white, rect)
 
-  # Metod för att rita ut bollen på skärmen
   def draw_ball(self, entity):
-    ball_radius = entity.get_component(
-        RadiusComponent).radius  # Hämta radien för bollen
-    rect = entity.get_component(
-        RectComponent).rect  # Hämta rektangelkomponenten för bollen
-    # Rita en cirkel på skärmen med bollens position och radien
+    """Draws a ball on the screen.
+
+    Args:
+      entity (Entity): The entity representing the ball.
+    """    
+    ball_radius = entity.get_component(RadiusComponent).radius
+    rect = entity.get_component(RectComponent).rect
     pygame.draw.circle(screen, white, rect.center, ball_radius)
 
 
-# Skapa instanser av spelentiteter
-entity_player = Entity()  # Skapa en instans för spelaren
-entity_ai = Entity()  # Skapa en instans för AI:n
-entity_ball = Entity()  # Skapa en instans för bollen
+entity_player = Entity()  
+entity_ai = Entity()  
+entity_ball = Entity()  
 
-# Lägg till komponenter till spelentiteterna
 entity_player.add_component(
     PositionComponent(screen_width - 40, screen_height //
-                      2))  # Lägg till positionskomponent för spelaren
+                      2))  
 entity_player.add_component(
-    SpeedComponent(5))  # Lägg till hastighetskomponent för spelaren
+    SpeedComponent(5))  
 entity_player.add_component(
     RectComponent(screen_width - 40, screen_height // 2, 20,
-                  100))  # Lägg till rektangelkomponent för spelaren
+                  100))  
 
 entity_ai.add_component(PositionComponent(
-    20, screen_height // 2))  # Lägg till positionskomponent för AI:n
+    20, screen_height // 2))  
 entity_ai.add_component(
-    SpeedComponent(5))  # Lägg till hastighetskomponent för AI:n
+    SpeedComponent(5)) 
 entity_ai.add_component(RectComponent(
-    20, screen_height // 2, 20, 100))  # Lägg till rektangelkomponent för AI:n
+    20, screen_height // 2, 20, 100)) 
 
 entity_ball.add_component(
     PositionComponent(screen_width // 2, screen_height //
-                      2))  # Lägg till positionskomponent för bollen
+                      2)) 
 entity_ball.add_component(
-    SpeedComponent(4))  # Lägg till hastighetskomponent för bollen
+    SpeedComponent(4))  
 entity_ball.add_component(
-    RadiusComponent(8))  # Lägg till radienkomponent för bollen
+    RadiusComponent(8))  
 entity_ball.add_component(
     RectComponent(screen_width // 2, screen_height // 2, 16,
-                  16))  # Lägg till rektangelkomponent för bollen
+                  16))  
 entity_ball.add_component(
-    WinnerComponent())  # Lägg till vinnarkomponent för bollen
+    WinnerComponent()) 
 
-# Huvudspel-loop
 run = True
 while run:
-  fpsClock.tick(fps)  # Håll uppdateringshastigheten till fps-värdet
-
-  draw_board()  # Rita spelplanen på skärmen
+  fpsClock.tick(fps)  
+  draw_board()  
   draw_text(f'CPU: {cpu_score}', font, white, 20,
-            15)  # Rita motståndarens poäng på skärmen
+            15)  
   draw_text(f'P1: {player_score}', font, white, screen_width - 100,
-            15)  # Rita spelarens poäng på skärmen
-
+            15)  
   RenderingSystem().draw_paddle(
-      entity_player)  # Rita ut spelarens paddel på skärmen
-  RenderingSystem().draw_paddle(entity_ai)  # Rita ut AI:ns paddel på skärmen
+      entity_player)  
+  RenderingSystem().draw_paddle(entity_ai) 
 
   if live_ball:  # Om bollen är i spel
     MotionSystem().move_ball(entity_ball, entity_player,
