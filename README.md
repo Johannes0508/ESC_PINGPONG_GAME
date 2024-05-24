@@ -22,12 +22,8 @@ Down Arrow: Move paddle down
 
 ## Features
 
-- Feature 1
-- Feature 2
-- Feature 3
-- List out the features of your project here.
-
-
+- **Realistic Physics**: Experience lifelike ball movement and paddle interactions for a truly immersive gameplay experience.
+- **Intuitive Controls**: Simple and responsive controls ensure a smooth gaming experience for players of all skill levels.
 
 ## License
 
