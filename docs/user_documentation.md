@@ -30,16 +30,24 @@ ___
 ---
 
 #### 3. FAQs and Troubleshooting
-- **Q: The application won't start. What should I do?**
-  - A: Ensure all necessary software is installed, and all application files are in their correct locations. Check that the executable file is working if used.
-- **Q: How can I restart the application after an error?**
-  - A: Provide steps on how to safely restart the application.
-- **Q: Is it possible to pause or save my progress?**
-  - A: Detail the steps or buttons to pause or save progress within the application, if available.
+
+#### Q: The application won't start. What should I do?
+- **A**: Ensure all necessary software, such as Python and Pygame, is installed. Verify that all application files are in their correct locations. If you're using an executable file, make sure it has the appropriate permissions to run.
+
+#### Q: How can I restart the application after an error?
+- **A**: To safely restart the application, close it completely and ensure no related processes are running in the background. If you are running the application from the command line, press `Ctrl + C` to terminate it, then use the command `python main.py` to start it again. If using an executable, simply double-click the executable file again.
+
+#### Q: Is it possible to pause or save my progress?
+- **A**: Unfortunately not but we will try to make that possible in the future.
 
 ---
 
 #### 4. Contact Information
-For additional support, questions, or feedback, please reach out via [Contact Method, e.g., email or support forum]. Visit [YourUsernameOrOrganization](https://yourwebsite.com) to contact us or report issues. We encourage users to get in touch for technical problems or suggestions for improvements.
+Johannes - [@Johannes0508](https://github.com/Johannes0508)
+
+Ajob - [@Ajob1](https://github.com/Ajob1)
+
+Project Link: [https://github.com/Johannes0508/ESC_PINGPONG_GAME](https://github.com/Johannes0508/ESC_PINGPONG_GAME)
+
 
 ---
