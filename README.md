@@ -5,14 +5,14 @@ Welcome to the thrilling world of ping pong, where lightning-fast reflexes, stra
 
 ## Table of Contents
 
-<<<<<<< HEAD
+
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Features](#features)
 - [File Structure](#file-structure)
 - [Contributing](#contributing)
-=======
+
 - [Usage](#usage)
 - [Features](#features)
 - [License](#license)
@@ -153,7 +153,6 @@ Distributed under the [Unlicense](LICENSE) License. See `LICENSE` for more infor
 ## Contact
 
 Johannes - [@Johannes0508](https://github.com/Johannes0508)
-<<<<<<< HEAD
 
 Ajob - [@Ajob1](https://github.com/Ajob1)
 
@@ -184,4 +183,3 @@ We would like to express our gratitude to the following individuals and projects
 Your contributions and support have been instrumental in bringing this project to life. Thank you!
 =======
 Your contributions and support have been instrumental in bringing this project to life. Thank you!
->>>>>>> d37a48d8ac894eb9220b5e1a95626289c0ac29aa
